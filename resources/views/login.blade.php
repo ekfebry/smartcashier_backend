@@ -262,7 +262,9 @@
         <!-- Desktop Illustration Section -->
         <div class="illustration-section d-none d-md-flex">
             <div class="checkout-illustration">
-                <div class="checkout-icon">🛒</div>
+                <div class="checkout-icon">
+                    <img src="{{asset('images/logo_restaurant.png')}}" alt="Logo" style="width:150px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+                </div>
                 <h3 style="margin-bottom: 10px;">Smart Cashier</h3>
                 <p>Kelola penjualan dengan mudah dan cepat</p>
             </div>
@@ -300,7 +302,7 @@
                 </div>
 
                 <button type="submit" class="login-btn">
-                    Mulai Sesi Penjualan
+                    Login
                 </button>
             </form>
 
@@ -327,7 +329,7 @@
         // Add loading animation to button on submit
         document.querySelector('form').addEventListener('submit', function() {
             const button = document.querySelector('.login-btn');
-            button.innerHTML = '🔄 Masuk...';
+            button.innerHTML = '🔄 Login...';
             button.disabled = true;
         });
     </script>
