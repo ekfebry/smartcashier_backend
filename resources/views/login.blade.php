@@ -26,12 +26,13 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            background: var(--background);
             min-height: 100vh;
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .login-container {
@@ -41,7 +42,8 @@
             overflow: hidden;
             max-width: 1000px;
             width: 100%;
-            margin: 20px;
+            display: flex;
+            min-height: 600px;
         }
 
         .illustration-section {
@@ -51,6 +53,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            flex: 1;
         }
 
         .illustration-section::before {
@@ -79,6 +82,16 @@
 
         .form-section {
             padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
 
         .logo-section {
@@ -101,11 +114,13 @@
         .form-group {
             position: relative;
             margin-bottom: 24px;
+            display: flex;
+            align-items: center;
         }
 
         .form-input {
-            width: 100%;
-            padding: 16px 20px;
+            width: 300px;
+            padding: 16px 50px 16px 20px;
             border: 2px solid var(--border);
             border-radius: 12px;
             font-size: 16px;
@@ -141,7 +156,7 @@
 
         .password-toggle {
             position: absolute;
-            right: 16px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -149,11 +164,21 @@
             color: var(--text-secondary);
             cursor: pointer;
             padding: 4px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-purple);
         }
 
         .login-btn {
             width: 100%;
-            padding: 16px;
+            max-width: 200px;
+            padding: 12px 24px;
             background: linear-gradient(135deg, var(--primary-purple) 0%, var(--accent-orange) 100%);
             border: none;
             border-radius: 12px;
@@ -164,6 +189,8 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            margin: 0 auto;
+            display: block;
         }
 
         .login-btn:hover {
@@ -219,8 +246,9 @@
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .login-container {
-                margin: 10px;
-                max-width: none;
+                flex-direction: column;
+                min-height: auto;
+                margin: 20px;
             }
 
             .illustration-section {
@@ -228,6 +256,7 @@
             }
 
             .form-section {
+                flex: 1;
                 padding: 40px 30px;
             }
 
@@ -235,8 +264,10 @@
                 font-size: 28px;
             }
 
-            .checkout-icon {
-                font-size: 80px;
+            .form-input {
+                width: 100%;
+                max-width: 300px;
+                padding: 16px 50px 16px 20px;
             }
         }
 
@@ -255,18 +286,18 @@
         .fade-in-up {
             animation: fadeInUp 0.6s ease-out;
         }
+
+
     </style>
 </head>
 <body>
     <div class="login-container fade-in-up">
         <!-- Desktop Illustration Section -->
-        <div class="illustration-section d-none d-md-flex">
+        <div class="illustration-section">
             <div class="checkout-illustration">
                 <div class="checkout-icon">
-                    <img src="{{asset('images/logo_restaurant.png')}}" alt="Logo" style="width:150px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+                    <img src="{{asset('images/logo_restaurant.png')}}" alt="Logo" style="width:200px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
                 </div>
-                <h3 style="margin-bottom: 10px;">Smart Cashier</h3>
-                <p>Kelola penjualan dengan mudah dan cepat</p>
             </div>
         </div>
 
@@ -285,7 +316,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login') }}" class="login-form">
                 @csrf
 
                 <div class="form-group">
@@ -296,8 +327,11 @@
                 <div class="form-group">
                     <input type="password" class="form-input" id="password" name="password" placeholder=" " required>
                     <label for="password" class="form-label">Password</label>
-                    <button type="button" class="password-toggle" onclick="togglePassword()">
-                        👁️
+                    <button type="button" class="password-toggle" onclick="togglePassword()" id="toggleIcon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
                     </button>
                 </div>
 
@@ -307,7 +341,7 @@
             </form>
 
             <div class="forgot-password">
-                <a href="#" class="forgot-link">Lupa password? Hubungi admin untuk reset</a>
+                <a href="#" class="forgot-link">Lupa password?</a>
             </div>
         </div>
     </div>
@@ -315,14 +349,24 @@
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const toggleBtn = document.querySelector('.password-toggle');
+            const toggleIcon = document.getElementById('toggleIcon');
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleBtn.textContent = '🙈';
+                toggleIcon.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                `;
             } else {
                 passwordInput.type = 'password';
-                toggleBtn.textContent = '👁️';
+                toggleIcon.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                `;
             }
         }
 
